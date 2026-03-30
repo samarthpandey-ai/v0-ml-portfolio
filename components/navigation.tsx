@@ -5,6 +5,8 @@ import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
 import { Menu, X, Cpu, Network, ArrowRight } from "lucide-react"
 import { useState, useEffect } from "react"
+// Integrated ThemeToggle
+import { ThemeToggle } from "@/components/theme-toggle"
 
 const navItems = [
   { href: "/", label: "Home" },
@@ -71,8 +73,9 @@ export function Navigation() {
           </div>
         </div>
 
-        {/* CTA Button */}
+        {/* CTA & Theme Switcher */}
         <div className="hidden md:flex items-center gap-4">
+          <ThemeToggle /> {/* Theme Switcher for Desktop */}
           <a
             href="mailto:your@email.com"
             className="group relative inline-flex items-center gap-2.5 rounded-xl bg-gradient-to-r from-primary to-cyan-400 px-6 py-3 text-sm font-semibold text-primary-foreground shadow-lg shadow-primary/30 transition-all hover:shadow-xl hover:shadow-primary/40 hover:scale-[1.02] overflow-hidden"
@@ -86,26 +89,29 @@ export function Navigation() {
           </a>
         </div>
 
-        {/* Mobile Menu Button */}
-        <button
-          className={cn(
-            "flex h-12 w-12 items-center justify-center rounded-xl border transition-all md:hidden",
-            mobileMenuOpen 
-              ? "border-primary/50 bg-primary/15 text-primary" 
-              : "border-border/60 bg-card/50 text-foreground hover:bg-card hover:border-primary/40"
-          )}
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          aria-label="Toggle menu"
-        >
-          {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-        </button>
+        {/* Mobile Buttons */}
+        <div className="flex items-center gap-3 md:hidden">
+           <ThemeToggle /> {/* Theme Switcher for Mobile Always Visible */}
+           <button
+            className={cn(
+              "flex h-12 w-12 items-center justify-center rounded-xl border transition-all",
+              mobileMenuOpen 
+                ? "border-primary/50 bg-primary/15 text-primary" 
+                : "border-border/60 bg-card/50 text-foreground hover:bg-card hover:border-primary/40"
+            )}
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            aria-label="Toggle menu"
+          >
+            {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          </button>
+        </div>
       </nav>
 
       {/* Mobile Navigation */}
       <div 
         className={cn(
           "md:hidden overflow-hidden transition-all duration-400 ease-out",
-          mobileMenuOpen ? "max-h-[450px] opacity-100" : "max-h-0 opacity-0"
+          mobileMenuOpen ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0"
         )}
       >
         <div className="border-t border-border/40 bg-background/95 backdrop-blur-2xl px-6 py-6 space-y-2">
