@@ -13,37 +13,6 @@ import {
 import { useEffect, useState, useRef } from "react"
 import Link from "next/link"
 
-// Updated stats array with your specific student metrics
-const stats = [
-  {
-    title: "GitHub Commits",
-    value: "800+",
-    numericValue: 800,
-    subtitle: "Contributions this year",
-    icon: GitBranch,
-    gradient: "from-primary to-cyan-400",
-    bgGradient: "from-primary/15 to-cyan-400/5",
-  },
-  {
-    title: "LeetCode Solved",
-    value: "250+",
-    numericValue: 250,
-    subtitle: "DSA Problems",
-    icon: Code2,
-    gradient: "from-orange-400 to-red-500",
-    bgGradient: "from-orange-500/15 to-red-500/5",
-  },
-  {
-    title: "ML Projects",
-    value: "10+",
-    numericValue: 10,
-    subtitle: "End-to-end deployments",
-    icon: Brain,
-    gradient: "from-violet-400 to-purple-500",
-    bgGradient: "from-violet-500/15 to-purple-500/5",
-  }
-]
-
 function AnimatedCounter({ value }: { value: number }) {
   const [count, setCount] = useState(0)
   const [hasAnimated, setHasAnimated] = useState(false)
@@ -80,49 +49,60 @@ function AnimatedCounter({ value }: { value: number }) {
     return () => observer.disconnect()
   }, [value, hasAnimated])
 
+  // If the live API fetches a new value AFTER the initial animation, update it
+  useEffect(() => {
+    if (hasAnimated) {
+      setCount(value)
+    }
+  }, [value, hasAnimated])
+
   return <span ref={ref}>{count.toLocaleString()}</span>
 }
 
 export function QuickStats() {
-  const [statsData, setStatsData] = useState({
-    github: 800,   // Fallback/Base value
-    leetcode: 250, // Fallback/Base value
-    projects: 10   // Fallback/Base value
-  });
+  // 1. Set Base Values (Fallbacks)
+  const [dynamicStats, setDynamicStats] = useState({
+    github: 800,
+    leetcode: 250,
+    projects: 10
+  })
 
+  // 2. Fetch Live Data on Component Mount
   useEffect(() => {
-    async function fetchDynamicStats() {
+    async function getLiveStats() {
       try {
-        // 1. Fetch GitHub Commits (using your username: samarthpandey-ai)
-        const ghRes = await fetch('https://api.github.com/users/samarthpandey-ai/events');
-        const ghEvents = await ghRes.json();
-        const recentCommits = ghEvents
-          .filter((e: any) => e.type === "PushEvent")
-          .reduce((acc: number, e: any) => acc + e.payload.commits.length, 0);
+        // Fetch GitHub Commits
+        const ghRes = await fetch('https://api.github.com/users/samarthpandey-ai/events')
+        if (ghRes.ok) {
+          const ghData = await ghRes.json()
+          const recentCommits = ghData
+            .filter((e: any) => e.type === "PushEvent")
+            .reduce((acc: number, e: any) => acc + (e.payload?.commits?.length || 0), 0)
+          
+          setDynamicStats(prev => ({ ...prev, github: 800 + recentCommits }))
+        }
 
-        // 2. Fetch LeetCode (using a community API proxy)
-        // Note: Replace 'samarthpandey-ai' with your actual LeetCode handle
-        const lcRes = await fetch('https://leetcode-stats-api.herokuapp.com/samarthpandey-ai');
-        const lcData = await lcRes.json();
-
-        setStatsData({
-          github: 800 + recentCommits, // Base + recent activity
-          leetcode: lcData.totalSolved || 250,
-          projects: 12 // This can be linked to your actual projects array length
-        });
+        // Fetch LeetCode Solved
+        const lcRes = await fetch('https://leetcode-stats-api.herokuapp.com/samarthpandey-ai')
+        if (lcRes.ok) {
+          const lcData = await lcRes.json()
+          if (lcData.totalSolved) {
+            setDynamicStats(prev => ({ ...prev, leetcode: lcData.totalSolved }))
+          }
+        }
       } catch (error) {
-        console.error("Error fetching live stats:", error);
+        console.error("Failed to fetch live stats, using fallbacks.", error)
       }
     }
-    fetchDynamicStats();
-  }, []);
+    
+    getLiveStats()
+  }, [])
 
-  // Update the stats array to use these live values
-  const dynamicStats = [
+  // 3. Define the UI mapping for the stats
+  const statsList = [
     {
       title: "GitHub Commits",
-      value: `${statsData.github}+`,
-      numericValue: statsData.github,
+      value: dynamicStats.github,
       subtitle: "Live contributions",
       icon: GitBranch,
       gradient: "from-primary to-cyan-400",
@@ -130,8 +110,7 @@ export function QuickStats() {
     },
     {
       title: "LeetCode Solved",
-      value: `${statsData.leetcode}+`,
-      numericValue: statsData.leetcode,
+      value: dynamicStats.leetcode,
       subtitle: "Live DSA Progress",
       icon: Code2,
       gradient: "from-orange-400 to-red-500",
@@ -139,19 +118,14 @@ export function QuickStats() {
     },
     {
       title: "ML Projects",
-      value: `${statsData.projects}+`,
-      numericValue: statsData.projects,
-      subtitle: "In-house deployments",
+      value: dynamicStats.projects,
+      subtitle: "Internal deployments",
       icon: Brain,
       gradient: "from-violet-400 to-purple-500",
       bgGradient: "from-violet-500/15 to-purple-500/5",
     }
-  ];
+  ]
 
-  // ... rest of the return block remains the same, but map over `dynamicStats`
-
-
-  
   return (
     <section className="relative overflow-hidden">
       {/* AI-themed background */}
@@ -178,9 +152,9 @@ export function QuickStats() {
           </p>
         </div>
 
-        {/* Stats Grid - Balanced for 3 items */}
+        {/* Dynamic Stats Grid */}
         <div className="grid grid-cols-1 gap-4 sm:gap-5 md:grid-cols-3">
-          {stats.map((stat, index) => (
+          {statsList.map((stat, index) => (
             <div
               key={index}
               className="group relative overflow-hidden rounded-2xl border border-border/50 bg-card/60 backdrop-blur-sm transition-all duration-500 hover:border-primary/40 hover:bg-card/90 hover:shadow-2xl hover:shadow-primary/10 hover:-translate-y-2"
@@ -195,14 +169,7 @@ export function QuickStats() {
                 
                 <div className="space-y-2">
                   <p className={`text-2xl sm:text-3xl font-bold tracking-tight bg-gradient-to-br ${stat.gradient} bg-clip-text text-transparent`}>
-                    {stat.numericValue !== null ? (
-                      <>
-                        <AnimatedCounter value={stat.numericValue} />
-                        {stat.value.includes('+') && '+'}
-                      </>
-                    ) : (
-                      stat.value
-                    )}
+                    <AnimatedCounter value={stat.value} />+
                   </p>
                   <p className="text-sm font-semibold text-foreground">
                     {stat.title}
@@ -218,10 +185,11 @@ export function QuickStats() {
 
         {/* Featured Roadmap & Research Focus */}
         <div className="mt-12 grid gap-6 lg:grid-cols-2">
+          {/* AI Research Focus */}
           <div className="group relative overflow-hidden rounded-3xl border border-border/50 bg-card/60 backdrop-blur-sm p-8 transition-all duration-500 hover:border-primary/40 hover:bg-card/90 hover:shadow-2xl hover:shadow-primary/10">
             <div className="absolute inset-0 bg-gradient-to-br from-primary/8 via-transparent to-purple-500/5 opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
             <div className="relative flex items-start gap-6">
-              <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-primary/25 to-cyan-400/10 border border-primary/30">
+              <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-primary/25 to-cyan-400/10 border border-primary/30 group-hover:scale-105 transition-transform duration-300">
                 <Brain className="h-8 w-8 text-primary" />
               </div>
               <div className="space-y-4 flex-1">
@@ -230,16 +198,17 @@ export function QuickStats() {
                   <Network className="h-5 w-5 text-primary opacity-0 group-hover:opacity-100 transition-opacity" />
                 </div>
                 <p className="text-muted-foreground leading-relaxed">
-                  Deep interest in <span className="text-foreground font-medium">Transformer architectures</span>, NLP, and computer vision systems. Currently exploring Mobile Sink Wireless Sensor Networks.
+                  Deep interest in <span className="text-foreground font-medium">Transformer architectures</span>, NLP, and computer vision systems. Currently exploring <span className="text-foreground font-medium">Mobile Sink Wireless Sensor Networks</span>.
                 </p>
               </div>
             </div>
           </div>
 
+          {/* 2027 Roadmap */}
           <div className="group relative overflow-hidden rounded-3xl border border-border/50 bg-card/60 backdrop-blur-sm p-8 transition-all duration-500 hover:border-primary/40 hover:bg-card/90 hover:shadow-2xl hover:shadow-primary/10">
             <div className="absolute inset-0 bg-gradient-to-br from-purple-500/8 via-transparent to-primary/5 opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
             <div className="relative flex items-start gap-6">
-              <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-violet-500/25 to-purple-500/10 border border-violet-500/30">
+              <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-violet-500/25 to-purple-500/10 border border-violet-500/30 group-hover:scale-105 transition-transform duration-300">
                 <Target className="h-8 w-8 text-violet-400" />
               </div>
               <div className="space-y-4 flex-1">
@@ -248,13 +217,14 @@ export function QuickStats() {
                   <ArrowRight className="h-5 w-5 text-violet-400 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
                 </div>
                 <p className="text-muted-foreground leading-relaxed">
-                  Targeting <span className="text-foreground font-medium">GATE 2027</span> for premier IITs and aiming for Masters at <span className="text-foreground font-medium">TUM Germany</span>.
+                  Targeting <span className="text-foreground font-medium">GATE 2027</span> for admission to premier IITs, and aiming for a Masters at <span className="text-foreground font-medium">TUM Germany</span>.
                 </p>
               </div>
             </div>
           </div>
         </div>
 
+        {/* CTA */}
         <div className="mt-16 text-center">
           <Link
             href="/about"
