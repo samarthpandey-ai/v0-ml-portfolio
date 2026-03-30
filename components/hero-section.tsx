@@ -1,6 +1,10 @@
 "use client"
 
-import { ArrowRight, Github, Linkedin, Mail, Cpu, Download, ChevronDown, Layers, Network,Copy, Check, Sparkles } from "lucide-react"
+import { 
+  ArrowRight, Github, Linkedin, Mail, Cpu, Download, 
+  ChevronDown, Layers, Network, Copy, Check, Sparkles,
+  School, BookOpen, Code 
+} from "lucide-react"
 import Link from "next/link"
 import { useEffect, useState } from "react"
 
@@ -14,7 +18,6 @@ const roles = [
 
 const fullName = "Samarth Kr Pandey"
 
-// Neural network node positions for AI aesthetic
 const neuralNodes = [
   { x: 10, y: 20, size: 4 },
   { x: 25, y: 35, size: 3 },
@@ -41,7 +44,6 @@ export function HeroSection() {
     setMounted(true)
   }, [])
 
-  // Typing animation for name
   useEffect(() => {
     if (isTyping && displayedName.length < fullName.length) {
       const timeout = setTimeout(() => {
@@ -53,7 +55,6 @@ export function HeroSection() {
     }
   }, [displayedName, isTyping])
 
-  // Cursor blinking
   useEffect(() => {
     const interval = setInterval(() => {
       setShowCursor(prev => !prev)
@@ -61,7 +62,6 @@ export function HeroSection() {
     return () => clearInterval(interval)
   }, [])
 
-  // Role rotation
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentRole((prev) => (prev + 1) % roles.length)
@@ -71,17 +71,12 @@ export function HeroSection() {
 
   return (
     <section className="relative min-h-screen overflow-hidden">
-      {/* AI-themed animated background */}
       <div className="absolute inset-0">
-        {/* Primary neural gradient orbs */}
         <div className="absolute top-1/4 -left-32 h-[600px] w-[600px] rounded-full bg-gradient-to-br from-primary/25 via-primary/10 to-transparent blur-[120px] animate-neural-pulse" />
         <div className="absolute bottom-1/4 -right-32 h-[500px] w-[500px] rounded-full bg-gradient-to-tl from-purple-500/20 via-primary/10 to-transparent blur-[100px] animate-neural-pulse" style={{ animationDelay: '1.5s' }} />
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[800px] w-[800px] rounded-full bg-gradient-radial from-primary/8 via-transparent to-transparent blur-[150px]" />
-        
-        {/* AI Grid pattern */}
         <div className="absolute inset-0 ai-grid-pattern [mask-image:radial-gradient(ellipse_80%_60%_at_50%_20%,#000_30%,transparent_100%)]" />
         
-        {/* Neural network visualization */}
         {mounted && (
           <svg className="absolute inset-0 w-full h-full opacity-30" xmlns="http://www.w3.org/2000/svg">
             <defs>
@@ -94,7 +89,6 @@ export function HeroSection() {
                 <stop offset="100%" stopColor="var(--primary)" stopOpacity="0" />
               </linearGradient>
             </defs>
-            {/* Neural connection lines */}
             {[...Array(12)].map((_, i) => (
               <line
                 key={i}
@@ -106,7 +100,6 @@ export function HeroSection() {
                 strokeWidth="0.5"
               />
             ))}
-            {/* Neural nodes */}
             {neuralNodes.map((node, i) => (
               <g key={i}>
                 <circle
@@ -134,9 +127,7 @@ export function HeroSection() {
       
       <div className="relative mx-auto max-w-7xl px-6 py-28 md:py-36 lg:py-44">
         <div className="grid gap-16 lg:grid-cols-2 lg:gap-20 items-center">
-          {/* Text Content */}
           <div className="space-y-10">
-            {/* AI Status badge */}
             <div className="inline-flex items-center gap-3 rounded-full border border-primary/40 bg-primary/10 px-5 py-2.5 text-sm font-medium text-primary backdrop-blur-sm">
               <span className="relative flex h-2.5 w-2.5">
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-75" />
@@ -146,7 +137,6 @@ export function HeroSection() {
             </div>
 
             <div className="space-y-8">
-              {/* Title badge with AI icon */}
               <div className="inline-flex items-center gap-3 text-sm font-semibold uppercase tracking-[0.2em] text-primary/80">
                 <Cpu className="h-4 w-4" />
                 <span className="h-px w-6 bg-primary/40" />
@@ -155,7 +145,6 @@ export function HeroSection() {
                 <Network className="h-4 w-4" />
               </div>
               
-              {/* Dynamic Name with typing effect */}
               <h1 className="text-5xl font-bold tracking-tight sm:text-6xl lg:text-7xl xl:text-8xl">
                 <span className="text-gradient">
                   {displayedName}
@@ -165,7 +154,6 @@ export function HeroSection() {
                 />
               </h1>
               
-              {/* Animated role with AI styling */}
               <div className="flex flex-wrap items-center gap-3 text-xl sm:text-2xl">
                 <span className="text-muted-foreground">Building</span>
                 <span className="relative">
@@ -176,7 +164,6 @@ export function HeroSection() {
                 </span>
               </div>
 
-              {/* Info tags with AI aesthetic */}
               <div className="flex flex-wrap items-center gap-3">
                 {[
                   { icon: School, text: "Thapar Institute" },
@@ -191,11 +178,11 @@ export function HeroSection() {
               </div>
             </div>
 
-              <p className="max-w-xl text-lg leading-relaxed text-muted-foreground">
-              Engineering intelligent systems at the intersection of <span className="text-foreground font-medium">deep learning</span> and <span className="text-foreground font-medium">natural language processing</span>. 
-              Passionate about building production-ready AI solutions that solve real-world challenges.
-            </p>
-            {/* CTA Buttons */}
+            <p className="max-w-xl text-lg leading-relaxed text-muted-foreground">
+              Engineering intelligent systems at the intersection of <span className="text-foreground font-medium">deep learning</span> and <span className="text-foreground font-medium">natural language processing</span>. 
+              Focused on building production-ready systems, from <span className="text-foreground font-medium">Symptom-based Diagnosis</span> apps to <span className="text-foreground font-medium">Automated Content Generation</span>.
+            </p>
+
             <div className="flex flex-wrap items-center gap-4">
               <Link
                 href="/projects"
@@ -216,17 +203,16 @@ export function HeroSection() {
                 About Me
               </Link>
               <a
-              href="/Samarth_Pandey_Resume.pdf" 
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group inline-flex items-center gap-2 rounded-2xl px-6 py-4 text-sm font-medium text-muted-foreground transition-all hover:text-primary hover:scale-[1.02]"
+                href="/Samarth_Pandey_Resume.pdf" 
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group inline-flex items-center gap-2 rounded-2xl px-6 py-4 text-sm font-medium text-muted-foreground transition-all hover:text-primary hover:scale-[1.02]"
               >
-              <Download className="h-4 w-4" />
-              Resume
+                <Download className="h-4 w-4" />
+                Resume
               </a>
             </div>
 
-            {/* Social Links */}
             <div className="flex items-center gap-6 pt-2">
               <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">Connect</span>
               <div className="h-px flex-1 bg-gradient-to-r from-border to-transparent max-w-24" />
@@ -234,7 +220,6 @@ export function HeroSection() {
                 {[
                   { href: "https://github.com/samarthpandey-ai", icon: Github, label: "GitHub" },
                   { href: "https://www.linkedin.com/in/samarth-pandey-137137293/", icon: Linkedin, label: "LinkedIn" },
-                  { href: "mailto:your@email.com", icon: Mail, label: "Email" },
                 ].map((social) => (
                   <a
                     key={social.label}
@@ -247,36 +232,53 @@ export function HeroSection() {
                     <social.icon className="h-5 w-5 transition-transform group-hover:scale-110" />
                   </a>
                 ))}
+
+                <div className="relative flex items-center">
+                  <button
+                    onClick={() => setShowEmail(!showEmail)}
+                    className="group rounded-xl p-3 text-muted-foreground transition-all hover:bg-card hover:text-primary"
+                    aria-label="Toggle Email"
+                  >
+                    <Mail className="h-5 w-5 transition-transform group-hover:scale-110" />
+                  </button>
+
+                  {showEmail && (
+                    <div className="absolute left-full ml-2 flex items-center gap-3 rounded-lg border border-border/50 bg-card/95 px-3 py-2 shadow-xl backdrop-blur-sm z-50">
+                      <span className="text-sm font-medium text-foreground whitespace-nowrap">spandeybe23@thapar.edu</span>
+                      <button
+                        onClick={() => {
+                          navigator.clipboard.writeText("spandeybe23@thapar.edu");
+                          setCopied(true);
+                          setTimeout(() => setCopied(false), 2000);
+                        }}
+                        className="rounded-md p-1 hover:bg-primary/10 text-muted-foreground hover:text-primary transition-colors"
+                        title="Copy to clipboard"
+                      >
+                        {copied ? <Check className="h-4 w-4 text-green-500" /> : <Copy className="h-4 w-4" />}
+                      </button>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
-          </div> 
-  
+          </div>
 
-          {/* Photo Section with AI Aesthetic */}
           <div className="relative mx-auto lg:mx-0">
             <div className="relative aspect-[4/5] w-80 sm:w-96 lg:w-[420px]">
-              {/* AI-themed decorative rings */}
               <div className="absolute -inset-8 rounded-3xl border border-primary/10 animate-pulse-glow" />
               <div className="absolute -inset-16 rounded-3xl border border-primary/5" />
               
-              {/* Neural corner brackets */}
               <div className="absolute -top-3 -left-3 h-10 w-10 border-t-2 border-l-2 border-primary/60 rounded-tl-xl" />
               <div className="absolute -top-3 -right-3 h-10 w-10 border-t-2 border-r-2 border-primary/60 rounded-tr-xl" />
               <div className="absolute -bottom-3 -left-3 h-10 w-10 border-b-2 border-l-2 border-primary/60 rounded-bl-xl" />
               <div className="absolute -bottom-3 -right-3 h-10 w-10 border-b-2 border-r-2 border-primary/60 rounded-br-xl" />
               
-              {/* Glow effect */}
               <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-primary/30 via-transparent to-purple-500/20 blur-3xl" />
               
-              {/* Main card */}
               <div className="relative h-full rounded-2xl border border-border/60 bg-gradient-to-br from-card via-card/95 to-card/80 overflow-hidden shadow-2xl shadow-primary/10">
-                {/* Inner gradient overlay */}
                 <div className="absolute inset-0 bg-gradient-to-br from-primary/8 via-transparent to-purple-500/5" />
-                
-                {/* AI pattern */}
                 <div className="absolute inset-0 dot-pattern opacity-30" />
                 
-                {/* Photo placeholder */}
                 <div className="absolute inset-4 rounded-xl bg-gradient-to-br from-secondary/90 to-secondary/50 flex items-center justify-center overflow-hidden border border-border/40">
                   <div className="text-center space-y-6 p-8">
                     <div className="mx-auto h-32 w-32 rounded-full border-2 border-dashed border-primary/50 bg-gradient-to-br from-primary/25 to-primary/5 flex items-center justify-center shadow-inner">
@@ -289,12 +291,10 @@ export function HeroSection() {
                   </div>
                 </div>
 
-                {/* Gradient corners */}
                 <div className="absolute top-0 right-0 h-40 w-40 bg-gradient-to-bl from-primary/20 via-primary/5 to-transparent" />
                 <div className="absolute bottom-0 left-0 h-40 w-40 bg-gradient-to-tr from-purple-500/15 via-primary/5 to-transparent" />
               </div>
 
-              {/* Floating info cards with AI styling */}
               <div className="absolute -bottom-6 -left-6 rounded-2xl border border-border/60 bg-card/95 backdrop-blur-xl px-5 py-4 shadow-2xl shadow-primary/10">
                 <div className="flex items-center gap-4">
                   <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-gradient-to-br from-primary/25 to-primary/5 border border-primary/30">
@@ -317,7 +317,6 @@ export function HeroSection() {
                 </div>
               </div>
 
-              {/* Models badge */}
               <div className="absolute top-1/2 -right-8 -translate-y-1/2 rounded-xl border border-border/50 bg-card/90 backdrop-blur-xl px-4 py-3 shadow-xl hidden xl:block">
                 <div className="flex items-center gap-3">
                   <Cpu className="h-4 w-4 text-primary" />
@@ -332,7 +331,6 @@ export function HeroSection() {
         </div>
       </div>
 
-     {/* Scroll indicator */}
       <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 animate-bounce">
         <span className="text-xs font-medium uppercase tracking-widest text-muted-foreground/70">Explore</span>
         <ChevronDown className="h-5 w-5 text-primary/70" />
@@ -340,4 +338,3 @@ export function HeroSection() {
     </section>
   )
 }
-
