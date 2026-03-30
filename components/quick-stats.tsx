@@ -12,8 +12,9 @@ import {
 } from "lucide-react"
 import { useEffect, useState, useRef } from "react"
 import Link from "next/link"
-// 1. First, make sure you import your config at the top of the file
+// 1. Importing the config to drive the "PROJECTS BUILT" count
 import { myProjects } from "@/lib/project-config"
+
 /**
  * AnimatedCounter: Handles the "rolling number" effect
  */
@@ -50,7 +51,6 @@ function AnimatedCounter({ value }: { value: number }) {
     return () => observer.disconnect()
   }, [value, hasAnimated])
 
-  // CRITICAL: Update if API returns a new value after animation starts
   useEffect(() => {
     if (hasAnimated) {
       setCount(value)
@@ -61,18 +61,14 @@ function AnimatedCounter({ value }: { value: number }) {
 }
 
 export function QuickStats() {
-  // 1. Initial State with your actual verified data
   const [dynamicStats, setDynamicStats] = useState({
-    github: 1247, // Your lifetime total
-    leetcode: 69,  // Your live samp123 count
-    projects: 12   // Current ML projects
+    github: 1247, 
+    leetcode: 69
   })
 
-  // 2. Fetch Live Data
   useEffect(() => {
     async function getLiveStats() {
       try {
-        // GitHub Fetch
         const ghRes = await fetch('https://api.github.com/users/samarthpandey-ai/events')
         if (ghRes.ok) {
           const ghData = await ghRes.json()
@@ -83,7 +79,6 @@ export function QuickStats() {
           setDynamicStats(prev => ({ ...prev, github: 1247 + recentCommits }))
         }
 
-        // LeetCode Fetch (samp123)
         const lcRes = await fetch('https://leetcode-stats-api.herokuapp.com/samp123')
         if (lcRes.ok) {
           const lcData = await lcRes.json()
@@ -99,43 +94,40 @@ export function QuickStats() {
     getLiveStats()
   }, [])
 
-  // 3. Stats data list
-  con: Brain,
+  // 3. Stats data list (CLEANED OF SYNTAX ERRORS)
+  const statsList = [
+    {
+      title: "GitHub Commits",
+      value: dynamicStats.github,
+      subtitle: "Live contributions",
+      icon: GitBranch,
+      gradient: "from-primary to-cyan-400",
+      bgGradient: "from-primary/15 to-cyan-400/5",
+    },
+    {
+      title: "LeetCode Solved",
+      value: dynamicStats.leetcode,
+      subtitle: "Live DSA Progress",
+      icon: Code2,
+      gradient: "from-orange-400 to-red-500",
+      bgGradient: "from-orange-500/15 to-red-500/5",
+    },
+    {
+      title: "PROJECTS BUILT",
+      value: myProjects.length, 
+      subtitle: "Documented & Deployed",
+      icon: Brain,
       gradient: "from-violet-400 to-purple-500",
-   const statsList = [
-  {
-    title: "GitHub Commits",
-    value: dynamicStats.github,
-    subtitle: "Live contributions",
-    icon: GitBranch,
-    gradient: "from-primary to-cyan-400",
-    bgGradient: "from-primary/15 to-cyan-400/5",
-  },
-  {
-    title: "LeetCode Solved",
-    value: dynamicStats.leetcode,
-    subtitle: "Live DSA Progress",
-    icon: Code2,
-    gradient: "from-orange-400 to-red-500",
-    bgGradient: "from-orange-500/15 to-red-500/5",
-  },
-  {
-    // CHANGE: Title updated to "PROJECTS BUILT" and value uses your config length
-    title: "PROJECTS BUILT",
-    value: myProjects.length, 
-    subtitle: "Documented & Deployed",
-    icon: Brain,
-    gradient: "from-violet-400 to-purple-500",
-    bgGradient: "from-violet-500/15 to-purple-500/5",
-  }
-]
+      bgGradient: "from-violet-500/15 to-purple-500/5",
+    }
+  ]
+
   return (
     <section className="relative overflow-hidden">
       <div className="absolute inset-0">
         <div className="absolute inset-0 bg-gradient-to-b from-background via-card/30 to-background" />
         <div className="absolute top-0 left-1/4 h-[500px] w-[500px] rounded-full bg-primary/8 blur-[150px]" />
         <div className="absolute bottom-0 right-1/4 h-[400px] w-[400px] rounded-full bg-purple-500/6 blur-[120px]" />
-        <div className="absolute inset-0 ai-grid-pattern opacity-30 [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,#000_20%,transparent_100%)]" />
       </div>
       
       <div className="relative mx-auto max-w-7xl px-6 py-24 md:py-32">
@@ -153,7 +145,6 @@ export function QuickStats() {
           </p>
         </div>
 
-        {/* Dynamic 3-Column Stats Grid */}
         <div className="grid grid-cols-1 gap-4 sm:gap-5 md:grid-cols-3">
           {statsList.map((stat, index) => (
             <div
@@ -180,20 +171,16 @@ export function QuickStats() {
           ))}
         </div>
 
-        {/* Featured Roadmap & Research Focus */}
+        {/* Roadmap Cards */}
         <div className="mt-12 grid gap-6 lg:grid-cols-2">
-          {/* Research Focus Card */}
           <div className="group relative overflow-hidden rounded-3xl border border-border/50 bg-card/60 backdrop-blur-sm p-8 transition-all duration-500 hover:border-primary/40 hover:bg-card/90 hover:shadow-2xl hover:shadow-primary/10">
             <div className="absolute inset-0 bg-gradient-to-br from-primary/8 via-transparent to-purple-500/5 opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
             <div className="relative flex items-start gap-6">
-              <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-primary/25 to-cyan-400/10 border border-primary/30 group-hover:scale-105 transition-transform duration-300">
+              <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-primary/25 to-cyan-400/10 border border-primary/30">
                 <Brain className="h-8 w-8 text-primary" />
               </div>
               <div className="space-y-4 flex-1">
-                <div className="flex items-center justify-between">
-                  <h3 className="text-xl font-bold text-foreground">AI Research Focus</h3>
-                  <Network className="h-5 w-5 text-primary opacity-0 group-hover:opacity-100 transition-opacity" />
-                </div>
+                <h3 className="text-xl font-bold text-foreground">AI Research Focus</h3>
                 <p className="text-muted-foreground leading-relaxed">
                   Focusing on Transformer architectures and computer vision. Currently researching <span className="text-foreground font-medium">Mobile Sink Wireless Sensor Networks</span>.
                 </p>
@@ -201,18 +188,14 @@ export function QuickStats() {
             </div>
           </div>
 
-          {/* 2027 Roadmap Card */}
           <div className="group relative overflow-hidden rounded-3xl border border-border/50 bg-card/60 backdrop-blur-sm p-8 transition-all duration-500 hover:border-primary/40 hover:bg-card/90 hover:shadow-2xl hover:shadow-primary/10">
             <div className="absolute inset-0 bg-gradient-to-br from-purple-500/8 via-transparent to-primary/5 opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
             <div className="relative flex items-start gap-6">
-              <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-violet-500/25 to-purple-500/10 border border-violet-500/30 group-hover:scale-105 transition-transform duration-300">
+              <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-violet-500/25 to-purple-500/10 border border-violet-500/30">
                 <Target className="h-8 w-8 text-violet-400" />
               </div>
               <div className="space-y-4 flex-1">
-                <div className="flex items-center justify-between">
-                  <h3 className="text-xl font-bold text-foreground">2027 Roadmap</h3>
-                  <ArrowRight className="h-5 w-5 text-violet-400 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
-                </div>
+                <h3 className="text-xl font-bold text-foreground">2027 Roadmap</h3>
                 <p className="text-muted-foreground leading-relaxed">
                   Targeting <span className="text-foreground font-medium">GATE 2027</span> for premier IITs and aiming for Masters at <span className="text-foreground font-medium">TUM Germany</span>.
                 </p>
@@ -221,7 +204,6 @@ export function QuickStats() {
           </div>
         </div>
 
-        {/* Footer Journey Link */}
         <div className="mt-16 text-center">
           <Link
             href="/about"
