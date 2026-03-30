@@ -5,7 +5,6 @@ import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
 import { Menu, X, Cpu, Network, ArrowRight } from "lucide-react"
 import { useState, useEffect } from "react"
-// Integrated ThemeToggle
 
 const navItems = [
   { href: "/", label: "Home" },
@@ -72,9 +71,8 @@ export function Navigation() {
           </div>
         </div>
 
-        {/* CTA & Theme Switcher */}
+        {/* CTA */}
         <div className="hidden md:flex items-center gap-4">
-          <ThemeToggle /> {/* Theme Switcher for Desktop */}
           <a
             href="mailto:your@email.com"
             className="group relative inline-flex items-center gap-2.5 rounded-xl bg-gradient-to-r from-primary to-cyan-400 px-6 py-3 text-sm font-semibold text-primary-foreground shadow-lg shadow-primary/30 transition-all hover:shadow-xl hover:shadow-primary/40 hover:scale-[1.02] overflow-hidden"
@@ -90,7 +88,6 @@ export function Navigation() {
 
         {/* Mobile Buttons */}
         <div className="flex items-center gap-3 md:hidden">
-           <ThemeToggle /> {/* Theme Switcher for Mobile Always Visible */}
            <button
             className={cn(
               "flex h-12 w-12 items-center justify-center rounded-xl border transition-all",
