@@ -4,12 +4,28 @@ import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
 import { Navigation } from '@/components/navigation'
 import { Footer } from '@/components/footer'
-
+import { ThemeProvider } from "@/components/theme-provider"
 const inter = Inter({ 
   subsets: ['latin'],
   variable: '--font-inter'
 })
-
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    // suppressHydrationWarning is CRITICAL to prevent errors on your MacBook browser
+    <html lang="en" suppressHydrationWarning>
+      <body>
+        <ThemeProvider 
+          attribute="class" 
+          defaultTheme="dark" 
+          enableSystem
+          disableTransitionOnChange
+        >
+          {children}
+        </ThemeProvider>
+      </body>
+    </html>
+  )
+}
 export const metadata: Metadata = {
   title: 'ML Engineer Portfolio | Neural Architectures & NLP',
   description: 'Machine Learning Engineer specializing in Neural Architectures and Natural Language Processing. B.Tech 2027 | GATE 2027 Aspirant',
