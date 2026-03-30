@@ -1,6 +1,6 @@
 "use client"
 
-import { ArrowRight, Github, Linkedin, Mail, Cpu, Download, ChevronDown, Layers, Network, Sparkles } from "lucide-react"
+import { ArrowRight, Github, Linkedin, Mail, Cpu, Download, ChevronDown, Layers, Network,Copy, Check, Sparkles } from "lucide-react"
 import Link from "next/link"
 import { useEffect, useState } from "react"
 
@@ -12,7 +12,7 @@ const roles = [
   "Transformer Models"
 ]
 
-const fullName = "Your Name"
+const fullName = "Samarth Kr Pandey"
 
 // Neural network node positions for AI aesthetic
 const neuralNodes = [
@@ -29,6 +29,8 @@ const neuralNodes = [
 ]
 
 export function HeroSection() {
+  const [showEmail, setShowEmail] = useState(false)
+  const [copied, setCopied] = useState(false)
   const [currentRole, setCurrentRole] = useState(0)
   const [displayedName, setDisplayedName] = useState("")
   const [isTyping, setIsTyping] = useState(true)
@@ -177,9 +179,9 @@ export function HeroSection() {
               {/* Info tags with AI aesthetic */}
               <div className="flex flex-wrap items-center gap-3">
                 {[
-                  { icon: Layers, text: "B.Tech 2027" },
-                  { icon: Cpu, text: "GATE Aspirant" },
-                  { icon: Network, text: "MS Germany" },
+                  { icon: School, text: "Thapar Institute" },
+                  { icon: BookOpen, text: "6th Semester" },
+                  { icon: Code, text: "ML & NLP Focus" },
                 ].map((tag, i) => (
                   <div key={i} className="group flex items-center gap-2 rounded-xl bg-card/60 border border-border/50 px-4 py-2 backdrop-blur-sm transition-all hover:border-primary/40 hover:bg-card/80">
                     <tag.icon className="h-4 w-4 text-primary/70 group-hover:text-primary transition-colors" />
@@ -189,11 +191,10 @@ export function HeroSection() {
               </div>
             </div>
 
-            <p className="max-w-xl text-lg leading-relaxed text-muted-foreground">
-              Engineering intelligent systems at the intersection of <span className="text-foreground font-medium">deep learning</span> and <span className="text-foreground font-medium">natural language processing</span>. 
-              Passionate about building production-ready AI solutions that solve real-world challenges.
-            </p>
-
+              <p className="max-w-xl text-lg leading-relaxed text-muted-foreground">
+              Engineering intelligent systems at the intersection of <span className="text-foreground font-medium">deep learning</span> and <span className="text-foreground font-medium">natural language processing</span>. 
+              Passionate about building production-ready AI solutions that solve real-world challenges.
+            </p>
             {/* CTA Buttons */}
             <div className="flex flex-wrap items-center gap-4">
               <Link
@@ -202,7 +203,7 @@ export function HeroSection() {
               >
                 <span className="relative z-10 flex items-center gap-3">
                   <Cpu className="h-4 w-4" />
-                  View ML Projects
+                  View Projects
                   <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                 </span>
                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/15 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
@@ -215,22 +216,24 @@ export function HeroSection() {
                 About Me
               </Link>
               <a
-                href="#"
-                className="inline-flex items-center gap-2 rounded-2xl px-6 py-4 text-sm font-medium text-muted-foreground transition-all hover:text-primary"
+              href="/Samarth_Pandey_Resume.pdf" 
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group inline-flex items-center gap-2 rounded-2xl px-6 py-4 text-sm font-medium text-muted-foreground transition-all hover:text-primary hover:scale-[1.02]"
               >
-                <Download className="h-4 w-4" />
-                Resume
+              <Download className="h-4 w-4" />
+              Resume
               </a>
             </div>
 
             {/* Social Links */}
-            <div className="flex items-center gap-6 pt-2">
+            {/* <div className="flex items-center gap-6 pt-2">
               <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">Connect</span>
               <div className="h-px flex-1 bg-gradient-to-r from-border to-transparent max-w-24" />
               <div className="flex items-center gap-1">
                 {[
-                  { href: "https://github.com", icon: Github, label: "GitHub" },
-                  { href: "https://linkedin.com", icon: Linkedin, label: "LinkedIn" },
+                  { href: "https://github.com/samarthpandey-ai", icon: Github, label: "GitHub" },
+                  { href: "https://www.linkedin.com/in/samarth-pandey-137137293/", icon: Linkedin, label: "LinkedIn" },
                   { href: "mailto:your@email.com", icon: Mail, label: "Email" },
                 ].map((social) => (
                   <a
@@ -246,7 +249,55 @@ export function HeroSection() {
                 ))}
               </div>
             </div>
-          </div>
+          </div> */}
+
+            <div className="flex items-center gap-1">
+  {/* GitHub and LinkedIn standard links */}
+  {[
+    { href: "https://github.com/samarthpandey-ai", icon: Github, label: "GitHub" },
+    { href: "https://www.linkedin.com/in/samarth-pandey-137137293/", icon: Linkedin, label: "LinkedIn" },
+  ].map((social) => (
+    <a
+      key={social.label}
+      href={social.href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="group rounded-xl p-3 text-muted-foreground transition-all hover:bg-card hover:text-primary"
+      aria-label={social.label}
+    >
+      <social.icon className="h-5 w-5 transition-transform group-hover:scale-110" />
+    </a>
+  ))}
+
+  {/* Interactive Email Button */}
+  <div className="relative flex items-center">
+    <button
+      onClick={() => setShowEmail(!showEmail)}
+      className="group rounded-xl p-3 text-muted-foreground transition-all hover:bg-card hover:text-primary"
+      aria-label="Toggle Email"
+    >
+      <Mail className="h-5 w-5 transition-transform group-hover:scale-110" />
+    </button>
+
+    {/* The Pop-out Email Box */}
+    {showEmail && (
+      <div className="absolute left-full ml-2 flex items-center gap-3 rounded-lg border border-border/50 bg-card/95 px-3 py-2 shadow-xl backdrop-blur-sm">
+        <span className="text-sm font-medium text-foreground">spandeybe23@thapar.edu</span>
+        <button
+          onClick={() => {
+            navigator.clipboard.writeText("your.email@thapar.edu");
+            setCopied(true);
+            setTimeout(() => setCopied(false), 2000); // Changes back to copy icon after 2 seconds
+          }}
+          className="rounded-md p-1 hover:bg-primary/10 text-muted-foreground hover:text-primary transition-colors"
+          title="Copy to clipboard"
+        >
+          {copied ? <Check className="h-4 w-4 text-green-500" /> : <Copy className="h-4 w-4" />}
+        </button>
+      </div>
+    )}
+  </div>
+</div>
 
           {/* Photo Section with AI Aesthetic */}
           <div className="relative mx-auto lg:mx-0">
