@@ -15,7 +15,6 @@ import Link from "next/link"
 
 /**
  * AnimatedCounter: Handles the "rolling number" effect
- * when the card enters the user's viewport.
  */
 function AnimatedCounter({ value }: { value: number }) {
   const [count, setCount] = useState(0)
@@ -50,27 +49,29 @@ function AnimatedCounter({ value }: { value: number }) {
     return () => observer.disconnect()
   }, [value, hasAnimated])
 
-  // Update count if the live value changes after initial animation
+  // CRITICAL: Update if API returns a new value after animation starts
   useEffect(() => {
-    if (hasAnimated) setCount(value)
+    if (hasAnimated) {
+      setCount(value)
+    }
   }, [value, hasAnimated])
 
   return <span ref={ref}>{count.toLocaleString()}</span>
 }
 
 export function QuickStats() {
-  // 1. Initialize state with baseline values from your profile
+  // 1. Initial State with your actual verified data
   const [dynamicStats, setDynamicStats] = useState({
-    github: 800,
-    leetcode: 250,
-    projects: 10
+    github: 1247, // Your lifetime total
+    leetcode: 69,  // Your live samp123 count
+    projects: 12   // Current ML projects
   })
 
-  // 2. Fetch live data from GitHub and LeetCode APIs
+  // 2. Fetch Live Data
   useEffect(() => {
     async function getLiveStats() {
       try {
-        // Fetch GitHub PushEvents for samarthpandey-ai
+        // GitHub Fetch
         const ghRes = await fetch('https://api.github.com/users/samarthpandey-ai/events')
         if (ghRes.ok) {
           const ghData = await ghRes.json()
@@ -78,10 +79,10 @@ export function QuickStats() {
             .filter((e: any) => e.type === "PushEvent")
             .reduce((acc: number, e: any) => acc + (e.payload?.commits?.length || 0), 0)
           
-          setDynamicStats(prev => ({ ...prev, github: 800 + recentCommits }))
+          setDynamicStats(prev => ({ ...prev, github: 1247 + recentCommits }))
         }
 
-        // Fetch LeetCode Solved count via community proxy
+        // LeetCode Fetch (samp123)
         const lcRes = await fetch('https://leetcode-stats-api.herokuapp.com/samp123')
         if (lcRes.ok) {
           const lcData = await lcRes.json()
@@ -90,14 +91,14 @@ export function QuickStats() {
           }
         }
       } catch (error) {
-        console.error("API Fetch failed, using baseline values.", error)
+        console.error("Live update failed, staying with baseline values.")
       }
     }
     
     getLiveStats()
   }, [])
 
-  // 3. Data mapping for the 3-column grid
+  // 3. Stats data list
   const statsList = [
     {
       title: "GitHub Commits",
@@ -127,7 +128,6 @@ export function QuickStats() {
 
   return (
     <section className="relative overflow-hidden">
-      {/* AI-themed background elements */}
       <div className="absolute inset-0">
         <div className="absolute inset-0 bg-gradient-to-b from-background via-card/30 to-background" />
         <div className="absolute top-0 left-1/4 h-[500px] w-[500px] rounded-full bg-primary/8 blur-[150px]" />
@@ -136,7 +136,6 @@ export function QuickStats() {
       </div>
       
       <div className="relative mx-auto max-w-7xl px-6 py-24 md:py-32">
-        {/* Header Section */}
         <div className="mb-20 text-center">
           <div className="inline-flex items-center gap-3 rounded-full border border-primary/40 bg-primary/10 px-6 py-3 text-sm font-medium text-primary mb-8 backdrop-blur-sm">
             <TrendingUp className="h-4 w-4" />
@@ -151,14 +150,13 @@ export function QuickStats() {
           </p>
         </div>
 
-        {/* The 3-Column Stats Grid */}
+        {/* Dynamic 3-Column Stats Grid */}
         <div className="grid grid-cols-1 gap-4 sm:gap-5 md:grid-cols-3">
           {statsList.map((stat, index) => (
             <div
               key={index}
               className="group relative overflow-hidden rounded-2xl border border-border/50 bg-card/60 backdrop-blur-sm transition-all duration-500 hover:border-primary/40 hover:bg-card/90 hover:shadow-2xl hover:shadow-primary/10 hover:-translate-y-2"
             >
-              {/* Visual accents */}
               <div className={`absolute inset-0 bg-gradient-to-br ${stat.bgGradient} opacity-0 transition-opacity duration-500 group-hover:opacity-100`} />
               <div className={`absolute top-0 left-0 right-0 h-1 bg-gradient-to-r ${stat.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
               
@@ -179,13 +177,13 @@ export function QuickStats() {
           ))}
         </div>
 
-        {/* Bottom Research & Roadmap Cards */}
+        {/* Featured Roadmap & Research Focus */}
         <div className="mt-12 grid gap-6 lg:grid-cols-2">
-          {/* Research Focus */}
-          <div className="group relative overflow-hidden rounded-3xl border border-border/50 bg-card/60 backdrop-blur-sm p-8 transition-all duration-500 hover:border-primary/40">
-            <div className="absolute inset-0 bg-gradient-to-br from-primary/8 via-transparent to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity" />
+          {/* Research Focus Card */}
+          <div className="group relative overflow-hidden rounded-3xl border border-border/50 bg-card/60 backdrop-blur-sm p-8 transition-all duration-500 hover:border-primary/40 hover:bg-card/90 hover:shadow-2xl hover:shadow-primary/10">
+            <div className="absolute inset-0 bg-gradient-to-br from-primary/8 via-transparent to-purple-500/5 opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
             <div className="relative flex items-start gap-6">
-              <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-primary/25 to-cyan-400/10 border border-primary/30">
+              <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-primary/25 to-cyan-400/10 border border-primary/30 group-hover:scale-105 transition-transform duration-300">
                 <Brain className="h-8 w-8 text-primary" />
               </div>
               <div className="space-y-4 flex-1">
@@ -200,11 +198,11 @@ export function QuickStats() {
             </div>
           </div>
 
-          {/* 2027 Roadmap */}
-          <div className="group relative overflow-hidden rounded-3xl border border-border/50 bg-card/60 backdrop-blur-sm p-8 transition-all duration-500 hover:border-primary/40">
-            <div className="absolute inset-0 bg-gradient-to-br from-purple-500/8 via-transparent to-primary/5 opacity-0 group-hover:opacity-100 transition-opacity" />
+          {/* 2027 Roadmap Card */}
+          <div className="group relative overflow-hidden rounded-3xl border border-border/50 bg-card/60 backdrop-blur-sm p-8 transition-all duration-500 hover:border-primary/40 hover:bg-card/90 hover:shadow-2xl hover:shadow-primary/10">
+            <div className="absolute inset-0 bg-gradient-to-br from-purple-500/8 via-transparent to-primary/5 opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
             <div className="relative flex items-start gap-6">
-              <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-violet-500/25 to-purple-500/10 border border-violet-500/30">
+              <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-violet-500/25 to-purple-500/10 border border-violet-500/30 group-hover:scale-105 transition-transform duration-300">
                 <Target className="h-8 w-8 text-violet-400" />
               </div>
               <div className="space-y-4 flex-1">
@@ -213,14 +211,14 @@ export function QuickStats() {
                   <ArrowRight className="h-5 w-5 text-violet-400 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
                 </div>
                 <p className="text-muted-foreground leading-relaxed">
-                  Aiming for a top rank in <span className="text-foreground font-medium">GATE 2027</span> and pursuing a Master's at <span className="text-foreground font-medium">TUM Germany</span>.
+                  Targeting <span className="text-foreground font-medium">GATE 2027</span> for premier IITs and aiming for Masters at <span className="text-foreground font-medium">TUM Germany</span>.
                 </p>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Footer Link */}
+        {/* Footer Journey Link */}
         <div className="mt-16 text-center">
           <Link
             href="/about"
