@@ -227,7 +227,7 @@ export function HeroSection() {
             </div>
 
             {/* Social Links */}
-            {/* <div className="flex items-center gap-6 pt-2">
+            <div className="flex items-center gap-6 pt-2">
               <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">Connect</span>
               <div className="h-px flex-1 bg-gradient-to-r from-border to-transparent max-w-24" />
               <div className="flex items-center gap-1">
@@ -249,55 +249,8 @@ export function HeroSection() {
                 ))}
               </div>
             </div>
-          </div> */}
-
-            <div className="flex items-center gap-1">
-  {/* GitHub and LinkedIn standard links */}
-  {[
-    { href: "https://github.com/samarthpandey-ai", icon: Github, label: "GitHub" },
-    { href: "https://www.linkedin.com/in/samarth-pandey-137137293/", icon: Linkedin, label: "LinkedIn" },
-  ].map((social) => (
-    <a
-      key={social.label}
-      href={social.href}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="group rounded-xl p-3 text-muted-foreground transition-all hover:bg-card hover:text-primary"
-      aria-label={social.label}
-    >
-      <social.icon className="h-5 w-5 transition-transform group-hover:scale-110" />
-    </a>
-  ))}
-
-  {/* Interactive Email Button */}
-  <div className="relative flex items-center">
-    <button
-      onClick={() => setShowEmail(!showEmail)}
-      className="group rounded-xl p-3 text-muted-foreground transition-all hover:bg-card hover:text-primary"
-      aria-label="Toggle Email"
-    >
-      <Mail className="h-5 w-5 transition-transform group-hover:scale-110" />
-    </button>
-
-    {/* The Pop-out Email Box */}
-    {showEmail && (
-      <div className="absolute left-full ml-2 flex items-center gap-3 rounded-lg border border-border/50 bg-card/95 px-3 py-2 shadow-xl backdrop-blur-sm">
-        <span className="text-sm font-medium text-foreground">spandeybe23@thapar.edu</span>
-        <button
-          onClick={() => {
-            navigator.clipboard.writeText("your.email@thapar.edu");
-            setCopied(true);
-            setTimeout(() => setCopied(false), 2000); // Changes back to copy icon after 2 seconds
-          }}
-          className="rounded-md p-1 hover:bg-primary/10 text-muted-foreground hover:text-primary transition-colors"
-          title="Copy to clipboard"
-        >
-          {copied ? <Check className="h-4 w-4 text-green-500" /> : <Copy className="h-4 w-4" />}
-        </button>
-      </div>
-    )}
-  </div>
-</div>
+          </div> 
+  
 
           {/* Photo Section with AI Aesthetic */}
           <div className="relative mx-auto lg:mx-0">
