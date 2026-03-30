@@ -6,7 +6,6 @@ import { cn } from "@/lib/utils"
 import { Menu, X, Cpu, Network, ArrowRight } from "lucide-react"
 import { useState, useEffect } from "react"
 // Integrated ThemeToggle
-import { ThemeToggle } from "@/components/theme-toggle"
 
 const navItems = [
   { href: "/", label: "Home" },
