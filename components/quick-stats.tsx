@@ -31,7 +31,7 @@ const stats = [
     icon: Brain,
     gradient: "from-violet-400 to-purple-500",
     bgGradient: "from-violet-500/15 to-purple-500/5",
-  },
+  }
 ]
 
 function AnimatedCounter({ value }: { value: number }) {
@@ -84,8 +84,8 @@ export function QuickStats() {
         <div className="absolute inset-0 ai-grid-pattern opacity-30 [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,#000_20%,transparent_100%)]" />
       </div>
       
-      <div className="relative mx-auto max-w-7xl px-6 py-24 md:py-32">
-        {/* Section header */}
+<div className="grid grid-cols-1 gap-4 sm:gap-5 md:grid-cols-3">
+  {/* Section header */}
         <div className="mb-20 text-center">
           <div className="inline-flex items-center gap-3 rounded-full border border-primary/40 bg-primary/10 px-6 py-3 text-sm font-medium text-primary mb-8 backdrop-blur-sm">
             <TrendingUp className="h-4 w-4" />
