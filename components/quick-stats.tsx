@@ -84,6 +84,74 @@ function AnimatedCounter({ value }: { value: number }) {
 }
 
 export function QuickStats() {
+  const [statsData, setStatsData] = useState({
+    github: 800,   // Fallback/Base value
+    leetcode: 250, // Fallback/Base value
+    projects: 10   // Fallback/Base value
+  });
+
+  useEffect(() => {
+    async function fetchDynamicStats() {
+      try {
+        // 1. Fetch GitHub Commits (using your username: samarthpandey-ai)
+        const ghRes = await fetch('https://api.github.com/users/samarthpandey-ai/events');
+        const ghEvents = await ghRes.json();
+        const recentCommits = ghEvents
+          .filter((e: any) => e.type === "PushEvent")
+          .reduce((acc: number, e: any) => acc + e.payload.commits.length, 0);
+
+        // 2. Fetch LeetCode (using a community API proxy)
+        // Note: Replace 'samarthpandey-ai' with your actual LeetCode handle
+        const lcRes = await fetch('https://leetcode-stats-api.herokuapp.com/samarthpandey-ai');
+        const lcData = await lcRes.json();
+
+        setStatsData({
+          github: 800 + recentCommits, // Base + recent activity
+          leetcode: lcData.totalSolved || 250,
+          projects: 12 // This can be linked to your actual projects array length
+        });
+      } catch (error) {
+        console.error("Error fetching live stats:", error);
+      }
+    }
+    fetchDynamicStats();
+  }, []);
+
+  // Update the stats array to use these live values
+  const dynamicStats = [
+    {
+      title: "GitHub Commits",
+      value: `${statsData.github}+`,
+      numericValue: statsData.github,
+      subtitle: "Live contributions",
+      icon: GitBranch,
+      gradient: "from-primary to-cyan-400",
+      bgGradient: "from-primary/15 to-cyan-400/5",
+    },
+    {
+      title: "LeetCode Solved",
+      value: `${statsData.leetcode}+`,
+      numericValue: statsData.leetcode,
+      subtitle: "Live DSA Progress",
+      icon: Code2,
+      gradient: "from-orange-400 to-red-500",
+      bgGradient: "from-orange-500/15 to-red-500/5",
+    },
+    {
+      title: "ML Projects",
+      value: `${statsData.projects}+`,
+      numericValue: statsData.projects,
+      subtitle: "In-house deployments",
+      icon: Brain,
+      gradient: "from-violet-400 to-purple-500",
+      bgGradient: "from-violet-500/15 to-purple-500/5",
+    }
+  ];
+
+  // ... rest of the return block remains the same, but map over `dynamicStats`
+
+
+  
   return (
     <section className="relative overflow-hidden">
       {/* AI-themed background */}
