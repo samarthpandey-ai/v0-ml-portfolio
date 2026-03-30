@@ -8,15 +8,17 @@ import {
   GitBranch, 
   ArrowRight, 
   Cpu, 
-  Network 
+  Sparkles 
 } from "lucide-react"
-import { useEffect, useState, useRef } from "react"
+import { useEffect, useState, useRef, useMemo } from "react"
 import Link from "next/link"
-// 1. Importing the config to drive the "PROJECTS BUILT" count
+// Import your central project configuration
 import { myProjects } from "@/lib/project-config"
+// Import the ProjectCard component to reuse the high-end UI
+import { ProjectCard } from "./project-card"
 
 /**
- * AnimatedCounter: Handles the "rolling number" effect
+ * AnimatedCounter: Handles the professional "rolling number" effect
  */
 function AnimatedCounter({ value }: { value: number }) {
   const [count, setCount] = useState(0)
@@ -46,15 +48,12 @@ function AnimatedCounter({ value }: { value: number }) {
       },
       { threshold: 0.1 }
     )
-
     if (ref.current) observer.observe(ref.current)
     return () => observer.disconnect()
   }, [value, hasAnimated])
 
   useEffect(() => {
-    if (hasAnimated) {
-      setCount(value)
-    }
+    if (hasAnimated) setCount(value)
   }, [value, hasAnimated])
 
   return <span ref={ref}>{count.toLocaleString()}</span>
@@ -66,6 +65,13 @@ export function QuickStats() {
     leetcode: 69
   })
 
+  // Logic to pick the 2 most recent projects for the Home Page
+  const latestTwo = useMemo(() => {
+    return [...myProjects]
+      .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+      .slice(0, 2);
+  }, []);
+
   useEffect(() => {
     async function getLiveStats() {
       try {
@@ -75,7 +81,6 @@ export function QuickStats() {
           const recentCommits = ghData
             .filter((e: any) => e.type === "PushEvent")
             .reduce((acc: number, e: any) => acc + (e.payload?.commits?.length || 0), 0)
-          
           setDynamicStats(prev => ({ ...prev, github: 1247 + recentCommits }))
         }
 
@@ -87,14 +92,12 @@ export function QuickStats() {
           }
         }
       } catch (error) {
-        console.error("Live update failed, staying with baseline values.")
+        console.error("Live fetch failed")
       }
     }
-    
     getLiveStats()
   }, [])
 
-  // 3. Stats data list (CLEANED OF SYNTAX ERRORS)
   const statsList = [
     {
       title: "GitHub Commits",
@@ -124,15 +127,10 @@ export function QuickStats() {
 
   return (
     <section className="relative overflow-hidden">
-      <div className="absolute inset-0">
-        <div className="absolute inset-0 bg-gradient-to-b from-background via-card/30 to-background" />
-        <div className="absolute top-0 left-1/4 h-[500px] w-[500px] rounded-full bg-primary/8 blur-[150px]" />
-        <div className="absolute bottom-0 right-1/4 h-[400px] w-[400px] rounded-full bg-purple-500/6 blur-[120px]" />
-      </div>
-      
-      <div className="relative mx-auto max-w-7xl px-6 py-24 md:py-32">
-        <div className="mb-20 text-center">
-          <div className="inline-flex items-center gap-3 rounded-full border border-primary/40 bg-primary/10 px-6 py-3 text-sm font-medium text-primary mb-8 backdrop-blur-sm">
+      <div className="relative mx-auto max-w-7xl px-6 py-24">
+        {/* Header Section */}
+        <div className="mb-16 text-center">
+          <div className="inline-flex items-center gap-3 rounded-full border border-primary/40 bg-primary/10 px-6 py-3 text-sm font-medium text-primary mb-8">
             <TrendingUp className="h-4 w-4" />
             Performance Metrics
             <Cpu className="h-4 w-4" />
@@ -140,74 +138,53 @@ export function QuickStats() {
           <h2 className="text-4xl font-bold tracking-tight text-foreground sm:text-5xl lg:text-6xl">
             <span className="text-gradient">Quantified</span> Excellence
           </h2>
-          <p className="mt-6 max-w-2xl mx-auto text-lg text-muted-foreground">
-            Measurable achievements demonstrating consistent growth and expertise in ML and AI domains.
-          </p>
         </div>
 
-        <div className="grid grid-cols-1 gap-4 sm:gap-5 md:grid-cols-3">
+        {/* 3-Column Stats Grid */}
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
           {statsList.map((stat, index) => (
-            <div
-              key={index}
-              className="group relative overflow-hidden rounded-2xl border border-border/50 bg-card/60 backdrop-blur-sm transition-all duration-500 hover:border-primary/40 hover:bg-card/90 hover:shadow-2xl hover:shadow-primary/10 hover:-translate-y-2"
-            >
-              <div className={`absolute inset-0 bg-gradient-to-br ${stat.bgGradient} opacity-0 transition-opacity duration-500 group-hover:opacity-100`} />
-              <div className={`absolute top-0 left-0 right-0 h-1 bg-gradient-to-r ${stat.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
-              
-              <div className="relative p-5 sm:p-6 space-y-4">
-                <div className={`inline-flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br ${stat.bgGradient} border border-border/40 transition-all duration-300 group-hover:scale-110`}>
-                  <stat.icon className="h-5 w-5 text-primary" />
-                </div>
-                
-                <div className="space-y-2">
-                  <p className={`text-2xl sm:text-3xl font-bold tracking-tight bg-gradient-to-br ${stat.gradient} bg-clip-text text-transparent`}>
-                    <AnimatedCounter value={stat.value} />+
-                  </p>
-                  <p className="text-sm font-semibold text-foreground">{stat.title}</p>
-                  <p className="text-xs text-muted-foreground">{stat.subtitle}</p>
-                </div>
+            <div key={index} className="group relative overflow-hidden rounded-2xl border border-white/5 bg-[#0A0F1C]/60 p-6 transition-all hover:border-primary/40">
+              <div className={`absolute inset-0 bg-gradient-to-br ${stat.bgGradient} opacity-0 group-hover:opacity-100 transition-opacity`} />
+              <stat.icon className="h-6 w-6 text-primary mb-4" />
+              <div className="relative space-y-1">
+                <p className={`text-3xl font-bold bg-gradient-to-br ${stat.gradient} bg-clip-text text-transparent`}>
+                  <AnimatedCounter value={stat.value} />+
+                </p>
+                <p className="text-sm font-semibold text-white">{stat.title}</p>
+                <p className="text-xs text-slate-400">{stat.subtitle}</p>
               </div>
             </div>
           ))}
         </div>
 
-        {/* Roadmap Cards */}
-        <div className="mt-12 grid gap-6 lg:grid-cols-2">
-          <div className="group relative overflow-hidden rounded-3xl border border-border/50 bg-card/60 backdrop-blur-sm p-8 transition-all duration-500 hover:border-primary/40 hover:bg-card/90 hover:shadow-2xl hover:shadow-primary/10">
-            <div className="absolute inset-0 bg-gradient-to-br from-primary/8 via-transparent to-purple-500/5 opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
-            <div className="relative flex items-start gap-6">
-              <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-primary/25 to-cyan-400/10 border border-primary/30">
-                <Brain className="h-8 w-8 text-primary" />
+        {/* REPLACED: "AI Research Focus" & "2027 Roadmap" with Latest Projects */}
+        <div className="mt-24 space-y-10">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="h-10 w-10 rounded-xl bg-primary/20 flex items-center justify-center border border-primary/30">
+                <Sparkles className="h-5 w-5 text-primary" />
               </div>
-              <div className="space-y-4 flex-1">
-                <h3 className="text-xl font-bold text-foreground">AI Research Focus</h3>
-                <p className="text-muted-foreground leading-relaxed">
-                  Focusing on Transformer architectures and computer vision. Currently researching <span className="text-foreground font-medium">Mobile Sink Wireless Sensor Networks</span>.
-                </p>
-              </div>
+              <h3 className="text-3xl font-bold tracking-tight text-white">
+                Latest <span className="text-gradient">Innovations</span>
+              </h3>
             </div>
+            <Link href="/projects" className="hidden md:flex items-center gap-2 text-sm text-primary hover:underline">
+              View All Projects <ArrowRight className="h-4 w-4" />
+            </Link>
           </div>
 
-          <div className="group relative overflow-hidden rounded-3xl border border-border/50 bg-card/60 backdrop-blur-sm p-8 transition-all duration-500 hover:border-primary/40 hover:bg-card/90 hover:shadow-2xl hover:shadow-primary/10">
-            <div className="absolute inset-0 bg-gradient-to-br from-purple-500/8 via-transparent to-primary/5 opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
-            <div className="relative flex items-start gap-6">
-              <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-violet-500/25 to-purple-500/10 border border-violet-500/30">
-                <Target className="h-8 w-8 text-violet-400" />
-              </div>
-              <div className="space-y-4 flex-1">
-                <h3 className="text-xl font-bold text-foreground">2027 Roadmap</h3>
-                <p className="text-muted-foreground leading-relaxed">
-                  Targeting <span className="text-foreground font-medium">GATE 2027</span> for premier IITs and aiming for Masters at <span className="text-foreground font-medium">TUM Germany</span>.
-                </p>
-              </div>
-            </div>
+          <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
+            {latestTwo.map((project, index) => (
+              <ProjectCard key={index} {...project} />
+            ))}
           </div>
         </div>
 
+        {/* Footer Link */}
         <div className="mt-16 text-center">
           <Link
             href="/about"
-            className="group inline-flex items-center gap-3 text-sm font-medium text-muted-foreground hover:text-primary transition-colors"
+            className="group inline-flex items-center gap-3 text-sm font-medium text-slate-400 hover:text-primary transition-colors"
           >
             <span>Explore my complete journey</span>
             <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
