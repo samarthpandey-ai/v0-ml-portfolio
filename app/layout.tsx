@@ -5,30 +5,15 @@ import './globals.css'
 import { Navigation } from '@/components/navigation'
 import { Footer } from '@/components/footer'
 import { ThemeProvider } from "@/components/theme-provider"
+
 const inter = Inter({ 
   subsets: ['latin'],
   variable: '--font-inter'
 })
-export default function RootLayout({ children }: { children: React.ReactNode }) {
-  return (
-    // suppressHydrationWarning is CRITICAL to prevent errors on your MacBook browser
-    <html lang="en" suppressHydrationWarning>
-      <body>
-        <ThemeProvider 
-          attribute="class" 
-          defaultTheme="dark" 
-          enableSystem
-          disableTransitionOnChange
-        >
-          {children}
-        </ThemeProvider>
-      </body>
-    </html>
-  )
-}
+
 export const metadata: Metadata = {
-  title: 'ML Engineer Portfolio | Neural Architectures & NLP',
-  description: 'Machine Learning Engineer specializing in Neural Architectures and Natural Language Processing. B.Tech 2027 | GATE 2027 Aspirant',
+  title: 'Samarth Kr Pandey | ML Engineer Portfolio',
+  description: 'Machine Learning Engineer specializing in Neural Architectures and NLP. B.Tech | Thapar Institute | GATE 2027 Aspirant',
   generator: 'v0.app',
   icons: {
     icon: [
@@ -55,14 +40,22 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className="dark">
+    /* suppressHydrationWarning is CRITICAL for next-themes to work without errors */
+    <html lang="en" suppressHydrationWarning>
       <body className={`${inter.variable} font-sans antialiased`}>
-        <Navigation />
-        <main className="min-h-screen">
-          {children}
-        </main>
-        <Footer />
-        <Analytics />
+        <ThemeProvider 
+          attribute="class" 
+          defaultTheme="dark" 
+          enableSystem
+          disableTransitionOnChange
+        >
+          <Navigation />
+          <main className="min-h-screen">
+            {children}
+          </main>
+          <Footer />
+          <Analytics />
+        </ThemeProvider>
       </body>
     </html>
   )
