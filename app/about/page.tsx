@@ -33,7 +33,7 @@ export default function AboutPage() {
 
               <div className="space-y-5 text-lg text-muted-foreground leading-relaxed max-w-2xl">
                 <p>
-                  I&apos;m a passionate Machine Learning Engineer currently pursuing my B.Tech 
+                  I&apos;m a passionate Machine Learning Engineer currently pursuing my .Tech 
                   with a deep fascination for neural architectures and natural language 
                   processing. My journey in AI began with a simple curiosity about how 
                   machines can understand human language.
