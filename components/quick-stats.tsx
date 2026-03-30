@@ -6,15 +6,6 @@ import Link from "next/link"
 
 const stats = [
   {
-    title: "Kaggle Rank",
-    value: "Expert",
-    numericValue: null,
-    subtitle: "Top 5% globally",
-    icon: Trophy,
-    gradient: "from-amber-400 to-orange-500",
-    bgGradient: "from-amber-500/15 to-orange-500/5",
-  },
-  {
     title: "GitHub Commits",
     value: "1,247",
     numericValue: 1247,
@@ -41,24 +32,7 @@ const stats = [
     gradient: "from-violet-400 to-purple-500",
     bgGradient: "from-violet-500/15 to-purple-500/5",
   },
-  {
-    title: "Papers Read",
-    value: "150+",
-    numericValue: 150,
-    subtitle: "Research papers",
-    icon: FlaskConical,
-    gradient: "from-pink-400 to-rose-500",
-    bgGradient: "from-pink-500/15 to-rose-500/5",
-  },
-  {
-    title: "Response",
-    value: "<24h",
-    numericValue: null,
-    subtitle: "Avg reply time",
-    icon: Zap,
-    gradient: "from-sky-400 to-blue-500",
-    bgGradient: "from-sky-500/15 to-blue-500/5",
-  },
+  
 ]
 
 function AnimatedCounter({ value }: { value: number }) {
