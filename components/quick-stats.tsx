@@ -82,7 +82,7 @@ export function QuickStats() {
         }
 
         // Fetch LeetCode Solved count via community proxy
-        const lcRes = await fetch('https://leetcode-stats-api.herokuapp.com/samarthpandey-ai')
+        const lcRes = await fetch('https://leetcode-stats-api.herokuapp.com/samp123')
         if (lcRes.ok) {
           const lcData = await lcRes.json()
           if (lcData.totalSolved) {
