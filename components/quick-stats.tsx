@@ -7,32 +7,31 @@ import Link from "next/link"
 const stats = [
   {
     title: "GitHub Commits",
-    value: "1,247",
-    numericValue: 1247,
-    subtitle: "This year",
+    value: "800+",
+    numericValue: 800,
+    subtitle: "Contributions this year",
     icon: GitBranch,
     gradient: "from-primary to-cyan-400",
     bgGradient: "from-primary/15 to-cyan-400/5",
   },
   {
     title: "LeetCode Solved",
-    value: "456",
-    numericValue: 456,
-    subtitle: "Problems",
+    value: "250+",
+    numericValue: 250,
+    subtitle: "DSA Problems",
     icon: Code2,
     gradient: "from-orange-400 to-red-500",
     bgGradient: "from-orange-500/15 to-red-500/5",
   },
   {
-    title: "ML Models",
-    value: "28",
-    numericValue: 28,
-    subtitle: "Production ready",
+    title: "ML Projects",
+    value: "10+",
+    numericValue: 10,
+    subtitle: "End-to-end deployments",
     icon: Brain,
     gradient: "from-violet-400 to-purple-500",
     bgGradient: "from-violet-500/15 to-purple-500/5",
   },
-  
 ]
 
 function AnimatedCounter({ value }: { value: number }) {
@@ -102,8 +101,8 @@ export function QuickStats() {
         </div>
 
         {/* Stats Bento Grid */}
-        <div className="grid grid-cols-2 gap-4 sm:gap-5 md:grid-cols-3 lg:grid-cols-6">
-          {stats.map((stat, index) => (
+        "className="grid grid-cols-1 gap-4 sm:gap-5 md:grid-cols-3"
+        {stats.map((stat, index) => (
             <div
               key={index}
               className="group relative overflow-hidden rounded-2xl border border-border/50 bg-card/60 backdrop-blur-sm transition-all duration-500 hover:border-primary/40 hover:bg-card/90 hover:shadow-2xl hover:shadow-primary/10 hover:-translate-y-2"
