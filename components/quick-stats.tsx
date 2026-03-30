@@ -12,7 +12,8 @@ import {
 } from "lucide-react"
 import { useEffect, useState, useRef } from "react"
 import Link from "next/link"
-
+// 1. First, make sure you import your config at the top of the file
+import { myProjects } from "@/lib/project-config"
 /**
  * AnimatedCounter: Handles the "rolling number" effect
  */
@@ -99,33 +100,35 @@ export function QuickStats() {
   }, [])
 
   // 3. Stats data list
-  const statsList = [
-    {
-      title: "GitHub Commits",
-      value: dynamicStats.github,
-      subtitle: "Live contributions",
-      icon: GitBranch,
-      gradient: "from-primary to-cyan-400",
-      bgGradient: "from-primary/15 to-cyan-400/5",
-    },
-    {
-      title: "LeetCode Solved",
-      value: dynamicStats.leetcode,
-      subtitle: "Live DSA Progress",
-      icon: Code2,
-      gradient: "from-orange-400 to-red-500",
-      bgGradient: "from-orange-500/15 to-red-500/5",
-    },
-    {
-      title: "ML Projects",
-      value: dynamicStats.projects,
-      subtitle: "Internal deployments",
-      icon: Brain,
+  con: Brain,
       gradient: "from-violet-400 to-purple-500",
-      bgGradient: "from-violet-500/15 to-purple-500/5",
-    }
-  ]
-
+   const statsList = [
+  {
+    title: "GitHub Commits",
+    value: dynamicStats.github,
+    subtitle: "Live contributions",
+    icon: GitBranch,
+    gradient: "from-primary to-cyan-400",
+    bgGradient: "from-primary/15 to-cyan-400/5",
+  },
+  {
+    title: "LeetCode Solved",
+    value: dynamicStats.leetcode,
+    subtitle: "Live DSA Progress",
+    icon: Code2,
+    gradient: "from-orange-400 to-red-500",
+    bgGradient: "from-orange-500/15 to-red-500/5",
+  },
+  {
+    // CHANGE: Title updated to "PROJECTS BUILT" and value uses your config length
+    title: "PROJECTS BUILT",
+    value: myProjects.length, 
+    subtitle: "Documented & Deployed",
+    icon: Brain,
+    gradient: "from-violet-400 to-purple-500",
+    bgGradient: "from-violet-500/15 to-purple-500/5",
+  }
+]
   return (
     <section className="relative overflow-hidden">
       <div className="absolute inset-0">
